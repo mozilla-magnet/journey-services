@@ -1,0 +1,111 @@
+FORMAT: 1A
+HOST: https://journey.tengam.org/v1
+
+# Journey
+
+Journey is a web service used as the primary content source for Project Magnet
+
+# Journey API Root [/]
+
+This offers the resources available to this API in the form of links in the
+JSON body.
+
+## Retrieve the entry point [GET]
+
++ Response 200 (application/json)
+
+        {
+            "userUrl": "/user",
+            "storyUrl": "/story"
+        }
+
+# Group Story
+
+Resource related to stories in the system.  A story belongs to a publisher and can be consumed by anyone.
+
+## Story [/story/{storyId}]
+
+
+
++ Attributes (StoryObject)
+
++ Parameters
+
+    + storyId: 12394dci (number, required)
+
+### View a Story [GET]
+
++ response 200
+
+
+
+# Group User
+
+Resource related to users in the system. A user is both a publisher and a consumer of content.
+
+## User [/user/{userName}]
+
+A User object has the following attributes:
+
++ Model (application/json)
+
+                + name (string, required)
+                + shortBio (string, required)
+                + imageUrl (string, required)
+                + url (string, required)
+                + story (array[Story], required)
+
++ Parameters
+
+    + userName: KFAStreetArt (required, string) - Unique username of the requested user.
+
+### View a User's information [GET]
+
++ Response 200 (application/json)
+
+        {
+            "name": "Kinda Fine Street Art",
+            "shortBio": "A fine curator of the non-fine arts",
+            "imageUrl": "https://media.tengam.org/image.jpg",
+            "url": "/user/1",
+            "story": [
+                {
+                    "url": "/user/1/story/1",
+                    "location": [ -52.213, 12.2312 ],
+                    "visits": 2391,
+                    "title": "A cool story",
+                    "description": "A short description"
+                },
+                {
+                    "url": "/user/1/story/2",
+                    "location": [ -9.23, 22.1234 ],
+                    "visits": 32145,
+                    "title": "You're Fined!",
+                    "description": "A taxing story"
+                }
+            ]
+        }
+
+## User Story [/user/{userName}/story/{storyId}]
+
+### View a User's story [GET]
+
++ Parameters
+
+    + userName: KFStreetArt (required, string) - Username of the user who created this story.
+    + storyId: 1230dso (required, string) - ID for this story.
+
++ Response 200 (application/json)
+
+        [Story]
+
+# Data Structures
+
+## Partial Story (object)
++ url (required)
++ title (string, required)
++ description (string, required)
++ visits (number, required)
++ location (array[number], required)
++ audioFiles
++ imageFiles
