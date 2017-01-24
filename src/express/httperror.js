@@ -3,7 +3,7 @@ class HttpError extends Error {
     super(message);
 
     this.code = errorCode;
-    this.statusCode = statusCode;
+    this.httpStatusCode = statusCode;
 
     if (Error.captureStackTrace) {
       Error.captureStackTrace(this, HttpError);

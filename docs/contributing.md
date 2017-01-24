@@ -33,7 +33,7 @@ output of the container from your terminal sending it to the background (`-d`
 flag).
 
 ```
-$ docker-compose -f docker-compose-dev.yml db -d up
+$ docker-compose -f docker-compose-dev.yml up -d db
 ```
 
 The `docker-compose-dev.yml` config, describes a `db` service that exposes the

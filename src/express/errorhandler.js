@@ -14,8 +14,8 @@ module.exports = function(err, req, res, next) {
     return;
   }
 
-  if (err instanceof HttpError) {
-    statusCode = err.statusCode;
+  if (err.httpStatusCode) {
+    statusCode = err.httpStatusCode;
   }
 
   let msg = '' + (err.message || err);

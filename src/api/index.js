@@ -1,6 +1,6 @@
-const { JourneyData, Storage } = require('journey-data');
-const { defaultStorageBackend } = require('../../config');
+const { JourneyData } = require('journey-data');
+const PostgresStorage = require('journey-data/src/storage/postgres-storage');
 
-const journeyData = new JourneyData(new Storage[defaultStorageBackend]());
+const journeyData = new JourneyData(new PostgresStorage());
 
 module.exports = journeyData;
