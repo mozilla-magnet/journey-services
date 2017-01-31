@@ -10,6 +10,8 @@ const journeyData = require('../api');
 const DEFAULT_API_LIMIT = 100;
 const DEFAULT_SEARCH_RADIUS = 100;
 
+router.use(bodyParser.json());
+
 router.get('/user', (req, res) => {
   throw new HttpError(501, 'Not Implemented');
 });
@@ -27,7 +29,7 @@ router.get('/user/:id/story/', (req, res) => {
 });
 
 // ?location=<lat>,<long>&radius=<radius>&limit=<limit>
-// ?sortby=<(latest)>
+// ?sortby=<(latest|popular)>
 router.get('/story', createRouteHandler((req, res) => {
 
   let limit = Number(req.query.limit) || DEFAULT_API_LIMIT;
@@ -58,11 +60,19 @@ router.get('/story/:id', createRouteHandler((req, res) => {
     });
 }));
 
-router.post('/eventsink', (req, res) => {
-  throw new HttpError(501, 'Not Implemented')
-// ?location=<lat>,<long>&radius=<radius>&limit=<limit>
-// ?sortby=<(latest)>
+router.post('/eventsink', createRouteHandler((req, res) => {
+  const requestBody = req.body;
 
-});
+  if (!Array.isArray(requestBody)) {
+    throw new HttpError(400, 'Event sink only accepts a JSON array');
+  }
+
+  // TODO: Rate limit size of request body (to avoid tieing up the server
+  // instance, we should queue these for async processing.
+  return journeyData.logEvents(requestBody)
+    .then(() => {
+      res.end();
+    });
+}));
 
 module.exports = router;
